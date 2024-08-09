@@ -1,21 +1,6 @@
-from . import db
-from .models import User
+from .. import db
+from ..models import User
 from werkzeug.security import generate_password_hash, check_password_hash
-
-def create_user(username, password, email):
-    """
-    创建新用户并保存到数据库。
-
-    :param username: 用户名
-    :param password: 用户密码
-    :param email: 用户邮箱
-    :return: 创建的用户对象
-    """
-    user = User(username=username, email=email)
-    user.set_password(password)  # 设置密码哈希
-    db.session.add(user)  # 添加到会话
-    db.session.commit()  # 提交到数据库
-    return user
 
 def get_user_by_username(username):
     """
@@ -25,6 +10,23 @@ def get_user_by_username(username):
     :return: 用户对象，若不存在则返回 None
     """
     return User.query.filter_by(username=username).first()
+
+def create_user(username, password):
+    """
+    创建新用户并保存到数据库。
+
+    :param username: 用户名
+    :param password: 用户密码
+    :param email: 用户邮箱
+    :return: 创建的用户对象
+    """
+    user = User(username=username)
+    user.set_password(password)  # 设置密码哈希
+    db.session.add(user)  # 添加到会话
+    db.session.commit()  # 提交到数据库
+    return user
+
+
 
 def get_user_by_id(user_id):
     """
