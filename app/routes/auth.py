@@ -59,5 +59,20 @@ def register():
 
 @bp.route('/logout', methods=['POST'])
 def logout():
-    # 处理用户登出
-    pass
+    return jsonify({'message': '登出成功'}), 200
+
+
+@bp.route('/protected_content', methods=['GET'])
+def protected_content():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'message': '未授权'}), 401
+    try:
+        decoded_token = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        user_id = decoded_token['user_id']
+        # 验证用户身份，返回相应内容
+        return jsonify({'message': '这是受保护的内容'})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token 已过期'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': '无效的 Token'}), 401
