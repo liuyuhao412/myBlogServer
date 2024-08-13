@@ -23,7 +23,7 @@ flask db migrate -m "迁移的消息提示（自己写）"
 ```
 - 应用迁移
 ```bash
-flask db init
+flask db upgrade
 ```
 ## HTTP 状态码及含义
 | 状态码                           | 含义                     | 可能的原因                                                       |

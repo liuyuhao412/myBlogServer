@@ -8,8 +8,12 @@ def get_user_profile(user_id):
     :param user_id: 用户ID
     :return: 用户资料对象，若不存在则返回 None
     """
-    data = UserProfile.query.filter_by(user_id=user_id).first()
-    data = data.to_dict()
+    user_profile = UserProfile.query.filter_by(user_id=user_id).first()
+    if user_profile is None:
+        user_profile = UserProfile(user_id=user_id)
+        db.session.add(user_profile)
+        db.session.commit()
+    data = user_profile.to_dict()
     return data
 
 def update_user_profile(user_id, email=None, avatar=None, info=None):

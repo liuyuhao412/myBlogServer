@@ -62,5 +62,7 @@ def update_profile():
     avatar = data.get('avatar')
     info = data.get('info')
     profile = update_user_profile(user_id, email, avatar, info)
+    if not profile:
+        return jsonify({'message': '个人信息更新失败'}), 500
     return jsonify({'message': '个人信息更新成功'}), 200
 
