@@ -18,6 +18,7 @@ def create_app():
 
     # 从配置文件加载配置
     app.config.from_object(Config)
+    app.config['UPLOAD_FOLDER'] = 'uploads'
 
     # 初始化扩展
     db.init_app(app)
@@ -31,7 +32,8 @@ def create_app():
 
     # 注册蓝图或路由
     with app.app_context():
-        from .routes import auth
+        from .routes import auth, profile
         app.register_blueprint(auth.bp)
+        app.register_blueprint(profile.bp)
 
     return app

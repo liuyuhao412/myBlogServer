@@ -52,7 +52,7 @@ def register():
 
     user = create_user(username=username, password=password)
     if user:
-        return jsonify({'message': '注册成功'}), 200
+            return jsonify({'message': '注册成功'}), 200
     else:
         return jsonify({'message': '注册失败，请稍后再试'}), 500
 
@@ -65,6 +65,8 @@ def logout():
 @bp.route('/protected_content', methods=['GET'])
 def protected_content():
     token = request.headers.get('Authorization')
+    if token and token.startswith('Bearer '):
+        token = token.split(' ')[1]
     if not token:
         return jsonify({'message': '未授权'}), 401
     try:

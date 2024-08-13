@@ -42,8 +42,16 @@ class UserProfile(db.Model):
     article_count = db.Column(db.Integer, default=0)
     tag_count = db.Column(db.Integer, default=0)
 
-    def __repr__(self):
-        return f'<UserProfile {self.user.username}>'
+    def to_dict(self):
+        return {
+            'username': self.user.username,
+            'avatar': self.avatar,
+            'email': self.email,
+            'info': self.info,
+            'articleCount': self.article_count,
+            'tagCount': self.tag_count,
+        }
+
 
 class Article(db.Model):
     """
