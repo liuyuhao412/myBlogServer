@@ -1,6 +1,7 @@
 from .. import db
 from ..models import UserProfile
 
+
 def get_user_profile(user_id):
     """
     根据用户ID获取用户资料。
@@ -16,10 +17,12 @@ def get_user_profile(user_id):
     data = user_profile.to_dict()
     return data
 
-def update_user_profile(user_id, email=None, avatar=None, info=None):
+
+def update_user_profile(user_id, name=None, email=None, avatar=None, info=None):
     """
     更新用户资料。
     :param user_id: 用户ID
+    :param name: 用户名
     :param email: 用户邮箱
     :param avatar: 新头像URL
     :param info: 新简介
@@ -27,6 +30,8 @@ def update_user_profile(user_id, email=None, avatar=None, info=None):
     """
     profile = UserProfile.query.filter_by(user_id=user_id).first()
     if profile:
+        if name:
+            profile.name = name
         if email:
             profile.email = email
         if avatar:
@@ -35,3 +40,8 @@ def update_user_profile(user_id, email=None, avatar=None, info=None):
             profile.info = info
         db.session.commit()
     return profile
+
+
+def get_name_by_id(user_id):
+    profile = UserProfile.query.filter_by(user_id=user_id).first()
+    return profile.name

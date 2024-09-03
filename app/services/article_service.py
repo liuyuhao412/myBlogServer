@@ -1,31 +1,43 @@
 from .. import db
-from ..models import Article
+from ..models import Article, UserProfile
 
-def create_article(title, description, content, category_id):
+
+def create_article(user_id, title, content):
     """
     创建新文章并保存到数据库。
-
     :param title: 文章标题
-    :param description: 文章描述
     :param content: 文章内容
-    :param category_id: 分类ID
     :return: 创建的文章对象
     """
-    article = Article(title=title, description=description, content=content, category_id=category_id)
+    article = Article(user_id=user_id, title=title, content=content)
+    User = UserProfile.query.filter_by(user_id=user_id).first()
+    User.article_count += 1
     db.session.add(article)
     db.session.commit()
     return article
 
-def get_article_by_id(article_id):
+
+def get_articles(user_id):
+    """
+    获取所有文章。
+    :return: 文章列表
+    """
+    Articles = Article.query.filter_by(user_id=user_id).all()
+    return [{"id": article.id, "title": article.title} for article in Articles]
+
+
+def get_article_by_id(id):
     """
     根据文章ID获取文章对象。
 
     :param article_id: 文章ID
     :return: 文章对象，若不存在则返回 None
     """
-    return Article.query.get(article_id)
+    article = Article.query.filter_by(id=id).first()
+    return article.to_dict() if article else None
 
-def update_article(article_id, title=None, description=None, content=None):
+
+def update_article(article_id, title=None, content=None):
     """
     更新文章信息。
 
@@ -39,12 +51,11 @@ def update_article(article_id, title=None, description=None, content=None):
     if article:
         if title:
             article.title = title
-        if description:
-            article.description = description
         if content:
             article.content = content
         db.session.commit()
     return article
+
 
 def delete_article(article_id):
     """

@@ -62,7 +62,7 @@ def logout():
     return jsonify({'message': '登出成功'}), 200
 
 
-@bp.route('/protected_content', methods=['GET'])
+@bp.route('/protected-content', methods=['GET'])
 def protected_content():
     token = request.headers.get('Authorization')
     if token and token.startswith('Bearer '):
