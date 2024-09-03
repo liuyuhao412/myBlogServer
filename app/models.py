@@ -52,7 +52,6 @@ class UserProfile(db.Model):
             'email': self.email,
             'info': self.info,
             'articleCount': self.article_count,
-            'tagCount': self.tag_count,
         }
 
 
@@ -69,10 +68,6 @@ class Article(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(
         'User', backref=db.backref('articles', uselist=False))
-    category_id = db.Column(db.Integer, db.ForeignKey(
-        'category.id'), nullable=True)
-    category = db.relationship(
-        'Category', backref=db.backref('articles', lazy=True))
 
     def to_dict(self):
         formatted_date = self.date.strftime(
