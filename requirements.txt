@@ -4,3 +4,5 @@ werkzeug~=3.0.3
 sqlalchemy~=2.0.30
 pyjwt~=2.8.0
 alembic~=1.13.2
+Flask-Migrate~=4.0.7
+Flask-Cors~=4.0.1

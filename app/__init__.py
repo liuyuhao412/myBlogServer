@@ -32,7 +32,7 @@ def create_app():
 
     # 注册蓝图或路由
     with app.app_context():
-        from .routes import auth, profile,artical
+        from .routes import auth, profile, artical
         app.register_blueprint(auth.bp)
         app.register_blueprint(profile.bp)
         app.register_blueprint(artical.bp)

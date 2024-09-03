@@ -1,5 +1,6 @@
 from .. import db
 from ..models import Article, UserProfile
+from datetime import datetime, timedelta
 
 
 def create_article(user_id, title, content):
@@ -53,6 +54,7 @@ def update_article(article_id, title=None, content=None):
             article.title = title
         if content:
             article.content = content
+        article.date = datetime.utcnow() + timedelta(hours=8)
         db.session.commit()
     return article
 
@@ -66,6 +68,8 @@ def delete_article(article_id):
     """
     article = Article.query.get(article_id)
     if article:
+        User = UserProfile.query.filter_by(user_id=article.user_id).first()
+        User.article_count -= 1
         db.session.delete(article)
         db.session.commit()
     return article

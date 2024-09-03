@@ -27,8 +27,6 @@ class User(db.Model):
         """
         return check_password_hash(self.password_hash, password)
 
-    def __repr__(self):
-        return f'<User {self.username}>'
 
 
 class UserProfile(db.Model):
@@ -45,7 +43,6 @@ class UserProfile(db.Model):
     avatar = db.Column(db.String(255), nullable=True)
     info = db.Column(db.Text, nullable=True)
     article_count = db.Column(db.Integer, default=0)
-    tag_count = db.Column(db.Integer, default=0)
 
     def to_dict(self):
         return {
@@ -80,7 +77,6 @@ class Article(db.Model):
     def to_dict(self):
         formatted_date = self.date.strftime(
             '%Y-%m-%d %H:%M:%S') if self.date else None
-
         return {
             "id": self.id,
             "title": self.title,
@@ -88,16 +84,3 @@ class Article(db.Model):
             "date": formatted_date,
             "name": self.user.profile.name,
         }
-
-
-class Category(db.Model):
-    """
-    分类模型类，存储博客文章的分类信息。
-    """
-    __tablename__ = 'category'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    article_count = db.Column(db.Integer, default=0)
-
-    def __repr__(self):
-        return f'<Category {self.name}>'

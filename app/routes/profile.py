@@ -74,3 +74,5 @@ def update_profile():
     if not profile:
         return jsonify({'message': '个人信息更新失败'}), 500
     return jsonify({'message': '个人信息更新成功'}), 200
+
+
